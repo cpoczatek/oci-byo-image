@@ -6,16 +6,17 @@ This repository contains various Packer templates for spinning up images in Virt
 ## Prerequisites
  * [Packer](https://www.packer.io/) (last tested with version 1.5.4)
  * [VirtualBox](https://www.virtualbox.org/) (last tested with version 6.1.16)
- * In order to export your image into your OCI tenancy, you must link your VirtualBox installation with your OCI account. Those instructions can be found [here](http://www.oracle.com/us/technologies/virtualization/oracle-vm-vb-oci-export-20190502-5480003.pdf#%5B%7B%22num%22%3A47%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C51%2C727%2C0%5D).
- 
+ * [VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads) (must match VBox version)
+ * In order to export your image into your OCI tenancy, you must link your VirtualBox installation with your OCI account. Those instructions can be found [here](http://www.oracle.com/us/technologies/virtualization/oracle-vm-vb-oci-export-20190502-5480003.pdf). If you have the OCI CLI installed and the conofig in the standard location VBox can pick it up automatically. Be sure all values are set, eg compartment.
+
 ## Build the VirtualBox Image
-Run the Packer build command using the (non Bare Metal) json templates. 
+Run the Packer build command using the (non Bare Metal) json templates.
 ```
 ## Usage
 $> cd oci-byo-image
 $> packer build <packer_template>
 
-## Examples 
+## Examples
 $> packer build debian-10.6-i386.json
 $> packer build rhel-7.9.json
 ```
@@ -31,7 +32,7 @@ Once complete, the image can be exported to an Object Storage bucket in your OCI
 $> VBoxManage export debian-10.6-12997... \
       --output OCI:// \
       --cloud 0 \
-      --vmname fedora_32_vb \
+      --vmname debian_10_6_vb \
       --cloudprofile DEFAULT \
       --cloudbucket vbox-upload \
       --cloudlaunchmode PARAVIRTUALIZED \
@@ -51,7 +52,7 @@ Now log into the instance using the credentials specified in the kickstart file 
 ## Build the Bare Metal VirtualBox Image
 In order to create a Bare Metal instance OCI, we must perform a slightly altered workflow. The following example creates a Redhat 7.9 Bare Metal instance in OCI from the Red Hat 7.9 installation ISO media:
 
-Run the Packer build command using the Bare Metal json template. 
+Run the Packer build command using the Bare Metal json template.
 ```
 $> cd oci-byo-image
 $> packer build rhel-7.9-BM.json
@@ -69,29 +70,21 @@ $> VBoxManage export rhel-7.9-BM-19970... \
       --cloudbucket vbox-upload \
       --cloudlaunchmode PARAVIRTUALIZED
  ```
- 
- When the image is finished exporting, login into your tenancy and add ```BM.Standard2.52``` to the list of compatible shapes. 
- 
+
+ When the image is finished exporting, login into your tenancy and add ```BM.Standard2.52``` to the list of compatible shapes.
+
  ![compatible shapes](screenshots/compatible_shapes.png)
- 
+
  Create an instance from the custom image:
- 
+
  ![create instance](screenshots/create_instance.png)
- 
+
  SSH into into image:
- 
+
  ```
  $> ssh opc@132.145.197
- [opc@instance-20210128-1610 ~]$ cat /etc/redhat-release 
+ [opc@instance-20210128-1610 ~]$ cat /etc/redhat-release
  Red Hat Enterprise Linux Server release 7.9 (Maipo)
  ```
- 
+
  ![ssh](screenshots/ssh.png)
- 
- 
- 
- 
- 
-
-
-

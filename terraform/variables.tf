@@ -10,24 +10,23 @@ variable "tenancy_ocid" {
 variable "region" {
 }
 
+variable "compartment_ocid" {
+}
+
 ############################
 #  Compute Configuration   #
 ############################
 
-variable "vm_display_name" {
-  description = "Instance Name"
-  default     = "simple-vm"
+variable "custom_image_id" {
 }
 
-variable "vm_compute_shape" {
-  description = "Compute Shape"
-  default     = "VM.Standard2.2" //2 cores
+variable "password" {
 }
 
 # only used for E3 Flex shape
 variable "vm_flex_shape_ocpus" {
   description = "Flex Shape OCPUs"
-  default = 1
+  default     = 1
 }
 
 variable "availability_domain_name" {
@@ -47,4 +46,11 @@ variable "ssh_public_key" {
 variable "hostname_label" {
   default     = "simple"
   description = "DNS Hostname Label. Must be unique across all VNICs in the subnet and comply with RFC 952 and RFC 1123."
+}
+
+############################
+#  Network Configuration   #
+############################
+
+variable "subnet_id" {
 }

@@ -1,22 +1,23 @@
 resource "oci_core_instance" "simple-vm" {
+  for_each = local.shapes
+
   availability_domain = local.availability_domain
-  compartment_id      = var.compute_compartment_ocid
-  display_name        = var.vm_display_name
-  shape               = var.vm_compute_shape
+  compartment_id      = var.compartment_ocid
+  display_name        = "simple-${replace(each.key, ".", "-")}"
+  shape               = each.key
 
   dynamic "shape_config" {
-    for_each = local.is_flex_shape
-      content {
-        ocpus = shape_config.value
-      }
+    for_each = substr(each.key, -5, -1) == ".Flex" ? [2] : []
+    content {
+      ocpus = shape_config.value
+    }
   }
 
 
   create_vnic_details {
     subnet_id              = var.subnet_id
-    display_name           = var.subnet_display_name
     assign_public_ip       = true
-    hostname_label         = var.hostname_label
+    hostname_label         = "simple-${replace(each.key, ".", "-")}"
     skip_source_dest_check = false
   }
 

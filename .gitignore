@@ -2,3 +2,4 @@
 iso/*
 packer_cache
 packer-*
+terraform/.terraform*

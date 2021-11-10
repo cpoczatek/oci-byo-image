@@ -1,8 +1,4 @@
 {
-  "variables": {
-      "ORG_ID": "{{env `RHEL_ORG_ID`}}",
-      "KEY": "{{env `RHEL_KEY`}}"
-  },
   "builders": [
     {
       "boot_command": "<up>e<wait><down><down><end> ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rhel-7.9-BM-ks.cfg<wait><f10>",
@@ -11,8 +7,7 @@
       "guest_os_type": "RedHat_64",
       "headless": false,
       "http_directory": "http",
-      "iso_checksum_type": "sha256",
-      "iso_checksum": "19d653ce2f04f202e79773a0cbeda82070e7527557e814ebbce658773fbe8191",
+      "iso_checksum": "sha256:19d653ce2f04f202e79773a0cbeda82070e7527557e814ebbce658773fbe8191",
       "iso_interface": "sata",
       "iso_url": "iso/rhel-server-7.9-x86_64-dvd.iso",
       "keep_registered": "true",
@@ -24,29 +19,39 @@
       "ssh_username": "opc",
       "type": "virtualbox-iso",
       "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--firmware", "EFI" ]
-      ],  
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--firmware",
+          "EFI"
+        ]
+      ],
       "vm_name": "rhel-7.9-{{ isotime \"19970804021400\" }}"
     }
   ],
   "provisioners": [
     {
-      "type": "file",
+      "destination": "/tmp/BM.sh",
       "source": "scripts/rhel_7.9_BM/BM.sh",
-      "destination": "/tmp/BM.sh"
+      "type": "file"
     },
     {
-      "type": "shell",
       "execute_command": "echo 'opc' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "inline": [
         "chmod u+x /tmp/BM.sh",
         "/tmp/BM.sh {{user `ORG_ID`}} {{user `KEY`}}"
-      ]
+      ],
+      "type": "shell"
     },
     {
-      "type": "shell",
       "execute_command": "echo 'opc' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/rhel_7.9/cleanup.sh"
+      "script": "scripts/rhel_7.9/cleanup.sh",
+      "type": "shell"
     }
-  ]
+  ],
+  "variables": {
+    "KEY": "{{env `RHEL_KEY`}}",
+    "ORG_ID": "{{env `RHEL_ORG_ID`}}"
+  }
 }
+

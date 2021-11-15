@@ -26,7 +26,7 @@
           "EFI"
         ]
       ],
-      "vm_name": "rhel-7.9-{{ isotime \"19970804021400\" }}"
+      "vm_name": "rhel-7.9-BM-{{ isotime \"19970804021400\" }}"
     }
   ],
   "provisioners": [
@@ -54,4 +54,3 @@
     "ORG_ID": "{{env `RHEL_ORG_ID`}}"
   }
 }
-

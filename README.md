@@ -7,7 +7,11 @@ This repository contains various Packer templates for spinning up images in Virt
  * [Packer](https://www.packer.io/) (last tested with version 1.5.4)
  * [VirtualBox](https://www.virtualbox.org/) (last tested with version 6.1.16)
  * [VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads) (must match VBox version)
- * In order to export your image into your OCI tenancy, you must link your VirtualBox installation with your OCI account. Those instructions can be found [here](http://www.oracle.com/us/technologies/virtualization/oracle-vm-vb-oci-export-20190502-5480003.pdf). If you have the OCI CLI installed and the conofig in the standard location VBox can pick it up automatically. Be sure all values are set, eg compartment.
+ * In order to export your image into your OCI tenancy, you must link your VirtualBox installation with your OCI account. Those instructions can be found [here](http://www.oracle.com/us/technologies/virtualization/oracle-vm-vb-oci-export-20190502-5480003.pdf). If you have the OCI CLI installed and the config in the standard location VBox can pick it up automatically. Be sure all values are set, eg compartment.
+
+ Notes on `.gitignore`: the `./iso` directory is ignored, as is `packer_cache`. The
+ .json files here use the convention of `packer-something` for their build directories
+ which are ignored as well.
 
 ## Build the VirtualBox Image
 Run the Packer build command using the (non Bare Metal) json templates.

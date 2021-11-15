@@ -6,7 +6,9 @@ echo "Activate subscription manager to install require software."
 echo "1=${1}, 2=${2}"
 ORG_ID=${1}
 KEY=${2}
-subscription-manager register --org="${ORG_ID}" --activationkey="${KEY}"
+#subscription-manager register --org="${ORG_ID}" --activationkey="${KEY}"
+# try different based on doc: https://access.redhat.com/solutions/253273
+subscription-manager register --username "${ORG_ID}" --password "${KEY}" --auto-attach
 
 SYSCONF_NET=/etc/sysconfig/network-scripts/ifcfg-enp0s3
 echo "Modify the sysconfig network scripts."

@@ -5,16 +5,4 @@ locals {
 
   # not used now
   #is_flex_shape = "neverhappens" == "VM.Standard.E3.Flex" ? [var.vm_flex_shape_ocpus] : []
-
-  shapes = toset([
-    "VM.Standard2.2",
-    "VM.Standard.E2.2",
-    "VM.Standard.E3.Flex",
-    "VM.Standard.E4.Flex"
-  ])
-
 }
-
-#"BM.Standard.E2.64",
-#"BM.Standard.E3.128",
-#"BM.Standard.E4.128"

@@ -48,6 +48,19 @@ variable "hostname_label" {
   description = "DNS Hostname Label. Must be unique across all VNICs in the subnet and comply with RFC 952 and RFC 1123."
 }
 
+variable "shapes" {
+
+    default = [
+      "VM.Standard2.2",
+      "VM.Standard.E2.2",
+      "VM.Standard.E3.Flex",
+      "VM.Standard.E4.Flex"
+    ]
+
+  # ["BM.Standard.E2.64", "BM.Standard.E3.128", "BM.Standard.E4.128"]
+
+}
+
 ############################
 #  Network Configuration   #
 ############################

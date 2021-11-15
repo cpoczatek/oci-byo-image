@@ -1,5 +1,5 @@
 resource "oci_core_instance" "simple-vm" {
-  for_each = local.shapes
+  for_each = toset(var.shapes)
 
   availability_domain = local.availability_domain
   compartment_id      = var.compartment_ocid

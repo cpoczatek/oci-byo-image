@@ -1,0 +1,36 @@
+{
+  "builders": [
+    {
+      "boot_command": ["<up><wait><tab><wait> text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rhel-7.9-ks.cfg<enter><wait5>"],
+      "http_port_min": "8000",
+      "http_port_max": "8000",
+      "boot_wait": "10s",
+      "disk_size": "40960",
+      "memory": "1024",
+      "guest_os_type": "RedHat_64",
+      "headless": false,
+      "http_directory": "http",
+      "iso_checksum": "sha256:1f78e705cd1d8897a05afa060f77d81ed81ac141c2465d4763c0382aa96cadd0",
+      "iso_url": "iso/rhel-8.5-x86_64-dvd.iso",
+      "keep_registered": "true",
+      "output_directory": "packer-rhel8.4-virtualbox",
+      "shutdown_command": "echo 'opc'|sudo -S /sbin/halt -h -p",
+      "ssh_password": "opc",
+      "ssh_port": 22,
+      "ssh_timeout": "3600s",
+      "ssh_username": "root",
+      "type": "virtualbox-iso",
+      "vm_name": "rhel-8.5-{{ isotime \"19970804021400\" }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'opc' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/rhel_7.9/OCI.sh",
+        "scripts/rhel_7.9/cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

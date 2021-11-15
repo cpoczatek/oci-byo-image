@@ -1,0 +1,114 @@
+
+#
+#
+# THIS IS A BAD COPY!!!
+#
+#
+
+
+#platform=x86, AMD64, or Intel EM64T
+#version=DEVEL
+
+## Installation program configuration and flow control commands:
+# Install from first optical drive.
+cdrom
+
+# Specify info as minimum log level on tty3 in Anaconda during
+installation.
+logging --level=info
+
+# Attempt to eject bootable media and reboot after installation.
+reboot --eject
+
+# Perform installation in text mode.
+text
+
+
+## System configuration commands:
+
+# Do not configure iptables rules.
+firewall --disabled
+
+# Set available keyboard layouts for system.
+keyboard --vckeymap=us --xlayouts='us'
+
+# Set language to use during installation and default to use on installed
+system.
+lang @@VBOX_INSERT_LOCALE@@
+
+# Set system root password using supplied plaintext.
+rootpw --plaintext opc
+
+# Set system time zone and indicate if hardware clock is UTC (Greenwich
+Mean) time.
+timezone --utc
+
+# Create new user on system and set password using supplied plaintext.
+user --name=opc --password=opc --plaintext
+
+
+## Network configuration commands:
+
+# Configure network device and activate in Anaconda installation
+environment.
+#  Device specified in first network command activated automatically.
+#  DHCP method used by default.
+#  Device: Link keyword specifies first interface with link in up state.
+#  Onboot: Enable device at boot time.
+#  Hostname: Specify host name for installed system.
+network --device=link --onboot=on --hostname=@@VBOX_INSERT_HOSTNAME_FQDN_SH@@
+
+
+## Storage handling commands:
+
+# Specifify how boot loader installed.
+#  Location boot record written dependent on drive usage of MBR or GPT
+scheme.
+#  Append: Specifies additional kernel parameters.
+bootloader --append="nomodeset crashkernel=auto rhgb quiet"
+
+# Remove partitions from system prior to creation of new partitions.
+#  All: Erase all partitions on disks reachable by installation program,
+including attached network storage.
+#  Initlabel: Initialize disk(s) by creating default labels in respective
+architectures designated for formatting.
+clearpart --all --initlabel
+
+# Automatically create partitions.
+#  Type: Plain keyword specifies regular partitioning scheme with no LVM.
+#  Default file system is xfs.
+autopart --type=plain
+
+# Initialize invalid partition tables and destroy contents of disks with
+invalid partition tables.
+zerombr
+
+
+# Packages.  We currently ignore missing packages/groups here to keep
+things simpler.
+%packages --ignoremissing
+@base
+@core
+@development
+@basic-desktop
+@desktop-debugging
+@desktop-platform
+@fonts
+@general-desktop
+@graphical-admin-tools
+@remote-desktop-clients
+@x11
+
+# Prepare building the additions kernel module, try get what we can from
+the cdrom as it may be impossible
+# to install anything from the post script:
+kernel-headers
+kernel-devel
+glibc-devel
+glibc-headers
+gcc
+dkms
+make
+bzip2
+perl
+elfutils-libelf-devel
